@@ -1,4 +1,18 @@
 - commits:
+    - subject: Fix URL in readme
+      hash: e380a92a8dd5a505f8283ac1297116cfe2849bd4
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Kyle Harding <kyle@balena.io>
+        signed-off-by: Kyle Harding <kyle@balena.io>
+      author: Kyle Harding
+      nested: []
+  version: 0.0.3
+  title: ""
+  date: 2024-04-12T16:18:49.507Z
+- commits:
     - subject: Add composite action to test the setup action
       hash: 15f01988a435bf62b5a8534f314bda31d225b030
       body: ""
