@@ -23,3 +23,8 @@ jobs:
         github.event_name == 'pull_request_target'
       )
     secrets: inherit
+    with:
+      custom_test_matrix: >
+        {
+          os: ["ubuntu-latest", "windows-latest", "macos-latest"]
+        }
