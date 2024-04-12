@@ -6,7 +6,7 @@ for interactions with balenaCloud like pushing releases.
 ## Usage
 
 ```yaml
-uses: balena-io-experimental/setup-balena@main
+uses: balena-io-examples/setup-balena-action@main
 with:
   # balena CLI version to install (example: `v18.1.9`)
   # Default: 'latest'
@@ -23,14 +23,14 @@ with:
 
 ```yaml
 - name: Setup balena CLI
-  uses: balena-io-experimental/setup-balena@main
+  uses: balena-io-examples/setup-balena-action@main
 ```
 
 ### Install specific release
 
 ```yaml
 - name: Setup balena CLI
-  uses: balena-io-experimental/setup-balena@main
+  uses: balena-io-examples/setup-balena-action@main
   with:
     cli-version: v18.1.9
 ```
@@ -39,7 +39,7 @@ with:
 
 ```yaml
 - name: Setup balena CLI
-  uses: balena-io-experimental/setup-balena@main
+  uses: balena-io-examples/setup-balena-action@main
   with:
     balena-token: "*****"
 ```
@@ -48,7 +48,7 @@ with:
 
 ```yaml
 - name: Setup balena CLI
-  uses: balena-io-experimental/setup-balena@main
+  uses: balena-io-examples/setup-balena-action@main
   env:
     BALENARC_BALENA_URL: balena-staging.com
   with:
@@ -64,7 +64,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup balena CLI
-      uses: balena-io-experimental/setup-balena@main
+      uses: balena-io-examples/setup-balena-action@main
       with:
         balena-token: "*****"
     - name: Push release
