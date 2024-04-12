@@ -58,6 +58,7 @@ runs:
         ARCH: ${{ steps.check_arch.outputs.slug }}
         VERSION: ${{ steps.check_version.outputs.slug }}
       run: |
+        set -x
         curl -fsSL "https://github.com/balena-io/balena-cli/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH}-standalone.zip" -o "${{ runner.temp }}/balena-cli.zip"
 
     - name: Unpack balena CLI
@@ -66,7 +67,7 @@ runs:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
       run: |
         unzip "${{ runner.temp }}/balena-cli.zip" -d "${GITHUB_ACTION_PATH}"
-        echo "${GITHUB_ACTION_PATH}/balena-cli" >> $GITHUB_PATH
+        echo "${GITHUB_ACTION_PATH}/balena-cli" >> "${GITHUB_PATH}"
 
     - name: Print balena CLI version
       shell: bash
