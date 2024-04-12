@@ -11,9 +11,6 @@ inputs:
   balena-token:
     description: "balenaCloud API token to login automatically"
     required: false
-  # balena-env:
-  #   description: "balenaCloud environment to use"
-  #   required: false
 
 # Builds and then runs as separate steps as default GitHub method does not allow passing build args
 runs:
@@ -27,7 +24,7 @@ runs:
           Linux) echo "slug=linux" >> "${GITHUB_OUTPUT}" ;;
           Windows) echo "slug=windows" >> "${GITHUB_OUTPUT}" ;;
           macOS) echo "slug=macOS" >> "${GITHUB_OUTPUT}" ;;
-          *) echo "Unsupported OS: ${{ runner.os }} ; exit 1 ;;
+          *) echo "Unsupported OS: ${{ runner.os }}" ; exit 1 ;;
         esac
 
     - name: Check runner Arch
@@ -37,7 +34,7 @@ runs:
         case ${{ runner.arch }} in
           X64) echo "slug=x64" >> "${GITHUB_OUTPUT}" ;;
           ARM64) echo "slug=arm64" >> "${GITHUB_OUTPUT}" ;;
-          *) echo "Unsupported Arch: ${{ runner.arch }} ; exit 1 ;;
+          *) echo "Unsupported Arch: ${{ runner.arch }}" ; exit 1 ;;
         esac
 
     - name: Check CLI version
@@ -53,6 +50,7 @@ runs:
           *) echo "slug=v${INPUT/v/}" >> "${GITHUB_OUTPUT}" ;;
         esac
 
+    # e.g. https://github.com/balena-io/balena-cli/releases/download/v18.1.9/balena-cli-v18.1.9-linux-arm64-standalone.zip
     - name: Download balena CLI
       shell: bash
       env:
@@ -60,25 +58,19 @@ runs:
         ARCH: ${{ steps.check_arch.outputs.slug }}
         VERSION: ${{ steps.check_version.outputs.slug }}
       run: |
-        curl -fsSL "https://github.com/balena-io/balena-cli/releases/download/v${VERSION}/balena-cli-v${VERSION}-${OS}-${ARCH}-standalone.zip" -o "${{ runner.temp }}/balena-cli.zip"
+        curl -fsSL "https://github.com/balena-io/balena-cli/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH}-standalone.zip" -o "${{ runner.temp }}/balena-cli.zip"
 
     - name: Unpack balena CLI
       shell: bash
       env:
         GITHUB_ACTION_PATH: ${{ github.action_path }}
       run: |
-        unzip "${{ runner.temp }}/balena-cli.zip" -d "${GITHUB_ACTION_PATH}/balena-cli"
+        unzip "${{ runner.temp }}/balena-cli.zip" -d "${GITHUB_ACTION_PATH}"
         echo "${GITHUB_ACTION_PATH}/balena-cli" >> $GITHUB_PATH
 
     - name: Print balena CLI version
       shell: bash
       run: balena version
-
-    # - name: Setup balena environment
-    #   if: inputs.balena-env != ''
-    #   shell: bash
-    #   run: |
-    #     yq '.balenaUrl = "${{ inputs.balena-env}}"' ~/.balenarc.yml
 
     - name: Login to balenaCloud
       if: inputs.balena-token != ''
