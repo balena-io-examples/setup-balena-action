@@ -15,6 +15,10 @@ with:
   # balenaCloud API token to login automatically
   # Default: ''
   balena-token: ''
+
+  # Skip using the tool cache and always re-download
+  # Default: 'false'
+  skip-cache: ''
 ```
 
 ## Examples
