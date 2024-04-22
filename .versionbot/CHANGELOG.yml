@@ -1,4 +1,18 @@
 - commits:
+    - subject: Use tool-cache to cache tool downloads
+      hash: 4086a39acc49c04c2d4e2b11b122c7ba7719f5b7
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Kyle Harding <kyle@balena.io>
+        signed-off-by: Kyle Harding <kyle@balena.io>
+      author: Kyle Harding
+      nested: []
+  version: 0.0.5
+  title: ""
+  date: 2024-04-22T19:46:17.093Z
+- commits:
     - subject: Fix balena binary path
       hash: 9481ee85133fbfc076e43db297948c597c88d7ec
       body: ""
