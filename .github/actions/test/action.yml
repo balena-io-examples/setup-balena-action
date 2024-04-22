@@ -18,7 +18,6 @@ runs:
     - name: Test setup of balena CLI
       uses: ./
       with:
-        cli-version: latest
         balena-token: ${{ fromJSON(inputs.secrets).BALENA_API_KEY }}
     - name: Print balena CLI version
       shell: bash

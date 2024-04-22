@@ -11,71 +11,85 @@ inputs:
   balena-token:
     description: "balenaCloud API token to login automatically"
     required: false
+  skip-cache:
+    description: "Skip using the tool cache and always re-download"
+    required: false
 
 # Builds and then runs as separate steps as default GitHub method does not allow passing build args
 runs:
   using: "composite"
   steps:
-    - name: Check runner OS
-      id: check_os
+    - name: Get latest release
+      if: inputs.cli-version == 'latest' || inputs.cli-version == ''
+      id: latest
       shell: bash
+      working-directory: ${{ runner.temp }}
       run: |
-        case ${{ runner.os }} in
-          Linux) echo "slug=linux" >> "${GITHUB_OUTPUT}" ;;
-          Windows) echo "slug=windows" >> "${GITHUB_OUTPUT}" ;;
-          macOS) echo "slug=macOS" >> "${GITHUB_OUTPUT}" ;;
-          *) echo "Unsupported OS: ${{ runner.os }}" ; exit 1 ;;
-        esac
+        release="$(curl -s https://api.github.com/repos/balena-io/balena-cli/releases/latest | jq -r '.tag_name')"
+        echo "release=${release}" >> "${GITHUB_OUTPUT}"
 
-    - name: Check runner Arch
-      id: check_arch
-      shell: bash
-      run: |
-        case ${{ runner.arch }} in
-          X64) echo "slug=x64" >> "${GITHUB_OUTPUT}" ;;
-          ARM64) echo "slug=arm64" >> "${GITHUB_OUTPUT}" ;;
-          *) echo "Unsupported Arch: ${{ runner.arch }}" ; exit 1 ;;
-        esac
+    - name: Restore balena CLI cache
+      if: inputs.skip-cache != 'true'
+      id: cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ runner.tool_cache }}/balena-cli
+        key: balena-cli-${{ runner.os }}-${{ runner.arch }}-${{ steps.latest.outputs.release || inputs.cli-version }}
 
-    - name: Check CLI version
-      id: check_version
-      shell: bash
+    - name: Download balena CLI (Linux X64)
+      if: runner.os == 'Linux' && ! steps.cache.outputs.cache-hit
+      working-directory: ${{ runner.temp }}
+      shell: bash --noprofile --norc -eo pipefail -x {0}
       env:
-        INPUT: ${{ inputs.cli-version }}
+        REPO: https://github.com/balena-io/balena-cli
+        VERSION: ${{ steps.latest.outputs.release || inputs.cli-version }}
+        ARCH: ${{ runner.arch }}
+        OS: linux
       run: |
-        latest="$(curl -s https://api.github.com/repos/balena-io/balena-cli/releases/latest | jq -r '.tag_name')"
+        curl -fsSL "${REPO}/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH,,}-standalone.zip" -o balena-cli.zip
+        unzip balena-cli.zip -d .
 
-        case ${INPUT} in
-          latest|"") echo "slug=${latest}" >> "${GITHUB_OUTPUT}" ;;
-          *) echo "slug=v${INPUT/v/}" >> "${GITHUB_OUTPUT}" ;;
-        esac
-
-    # e.g. https://github.com/balena-io/balena-cli/releases/download/v18.1.9/balena-cli-v18.1.9-linux-arm64-standalone.zip
-    - name: Download balena CLI
-      shell: bash
+    - name: Download balena CLI (Windows X64)
+      if: runner.os == 'Windows' && ! steps.cache.outputs.cache-hit
+      working-directory: ${{ runner.temp }}
+      shell: bash --noprofile --norc -eo pipefail -x {0}
       env:
-        OS: ${{ steps.check_os.outputs.slug }}
-        ARCH: ${{ steps.check_arch.outputs.slug }}
-        VERSION: ${{ steps.check_version.outputs.slug }}
+        REPO: https://github.com/balena-io/balena-cli
+        VERSION: ${{ steps.latest.outputs.release || inputs.cli-version }}
+        ARCH: ${{ runner.arch }}
+        OS: windows
       run: |
-        set -x
-        curl -fsSL "https://github.com/balena-io/balena-cli/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH}-standalone.zip" -o "${{ runner.temp }}/balena-cli.zip"
+        curl -fsSL "${REPO}/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH,,}-standalone.zip" -o balena-cli.zip
+        unzip balena-cli.zip -d .
 
-    - name: Unpack balena CLI
-      shell: bash
+    - name: Download balena CLI (macOS)
+      if: runner.os == 'macOS' && ! steps.cache.outputs.cache-hit
+      working-directory: ${{ runner.temp }}
+      shell: bash --noprofile --norc -eo pipefail -x {0}
       env:
-        GITHUB_ACTION_PATH: ${{ github.action_path }}
+        REPO: https://github.com/balena-io/balena-cli
+        VERSION: ${{ steps.latest.outputs.release || inputs.cli-version }}
+        ARCH: ${{ runner.arch }}
+        OS: macOS
       run: |
-        unzip "${{ runner.temp }}/balena-cli.zip" -d "${GITHUB_ACTION_PATH}"
-        echo "${GITHUB_ACTION_PATH}/balena-cli" >> "${GITHUB_PATH}"
+        curl -fsSL "${REPO}/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH,,}-standalone.zip" -o balena-cli.zip
+        unzip balena-cli.zip -d .
+
+    - name: Install balena CLI to tool cache
+      uses: AnimMouse/tool-cache@v1
+      with:
+        folder_name: balena-cli
+        cache_hit: ${{ steps.cache.outputs.cache-hit }}
 
     - name: Print balena CLI version
       shell: bash
+      working-directory: ${{ runner.temp }}
       run: balena version
 
     - name: Login to balenaCloud
       if: inputs.balena-token != ''
       shell: bash
+      working-directory: ${{ runner.temp }}
       run: |
         balena login --token "${{ inputs.balena-token }}"
         balena whoami
