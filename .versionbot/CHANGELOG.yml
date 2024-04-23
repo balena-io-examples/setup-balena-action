@@ -1,4 +1,18 @@
 - commits:
+    - subject: Refactor installer to a single curl step
+      hash: 890796caaa0ea93452afdc7cef7aae95bad5c21b
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Kyle Harding <kyle@balena.io>
+        signed-off-by: Kyle Harding <kyle@balena.io>
+      author: Kyle Harding
+      nested: []
+  version: 0.0.6
+  title: ""
+  date: 2024-04-23T14:46:29.289Z
+- commits:
     - subject: Use tool-cache to cache tool downloads
       hash: 4086a39acc49c04c2d4e2b11b122c7ba7719f5b7
       body: ""
