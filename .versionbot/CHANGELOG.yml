@@ -1,4 +1,17 @@
 - commits:
+    - subject: Pin dependencies
+      hash: 7f567f3a0373b9a71ede8a01a2b0d531b097b5cf
+      body: |
+        Update AnimMouse/tool-cache
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Self-hosted Renovate Bot
+      nested: []
+  version: 0.0.8
+  title: ""
+  date: 2025-05-23T15:54:21.057Z
+- commits:
     - subject: Resolve the latest release to a hardcoded semver
       hash: eeb2fdff737fa6a11f39c97a9b272144cff66149
       body: |
