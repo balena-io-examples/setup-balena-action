@@ -26,5 +26,5 @@ jobs:
     with:
       custom_test_matrix: >
         {
-          os: ["ubuntu-latest", "windows-latest", "macos-latest"]
+          os: ["ubuntu-latest", "windows-latest", "macos-latest-xlarge"]
         }
