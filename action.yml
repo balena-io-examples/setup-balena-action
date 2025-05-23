@@ -19,16 +19,16 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Get latest release
+    - name: Use latest release
       if: inputs.cli-version == 'latest' || inputs.cli-version == ''
       id: latest
       shell: bash
       working-directory: ${{ runner.temp }}
       env:
-        REPO: balena-io/balena-cli
+        # renovate: datasource=github-releases depName=balena-io/balena-cli
+        BALENA_CLI_VERSION: v21.1.13
       run: |
-        release="$(curl -s "https://api.github.com/repos/${REPO}/releases/latest" | jq -r '.tag_name')"
-        echo "release=${release}" >> "${GITHUB_OUTPUT}"
+        echo "release=${BALENA_CLI_VERSION}" >> "${GITHUB_OUTPUT}"
 
     - name: Restore tool cache
       if: inputs.skip-cache != 'true'
