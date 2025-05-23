@@ -1,4 +1,20 @@
 - commits:
+    - subject: Resolve the latest release to a hardcoded semver
+      hash: eeb2fdff737fa6a11f39c97a9b272144cff66149
+      body: |
+        This prevents defaulting to releases that cannot be unpacked
+        using the existing steps, as tests will fail.
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Kyle Harding <kyle@balena.io>
+        signed-off-by: Kyle Harding <kyle@balena.io>
+      author: Kyle Harding
+      nested: []
+  version: 0.0.7
+  title: ""
+  date: 2025-05-23T14:27:04.270Z
+- commits:
     - subject: Refactor installer to a single curl step
       hash: 890796caaa0ea93452afdc7cef7aae95bad5c21b
       body: ""
