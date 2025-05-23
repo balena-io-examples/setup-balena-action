@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency balena-io/balena-cli to v21.1.14
+      hash: 6c0c5182a2d4f8dcbe1077cb069cc4652807c5dc
+      body: |
+        Update balena-io/balena-cli from 21.1.13 to 21.1.14
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Self-hosted Renovate Bot
+      nested: []
+  version: 0.0.9
+  title: ""
+  date: 2025-05-23T16:57:01.768Z
+- commits:
     - subject: Pin dependencies
       hash: 7f567f3a0373b9a71ede8a01a2b0d531b097b5cf
       body: |
