@@ -33,7 +33,7 @@ runs:
     - name: Restore tool cache
       if: inputs.skip-cache != 'true'
       id: cache
-      uses: actions/cache@v4
+      uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
       with:
         path: ${{ runner.tool_cache }}/balena-cli
         key: balena-cli-${{ runner.os }}-${{ runner.arch }}-${{ steps.latest.outputs.release || inputs.cli-version }}
@@ -77,7 +77,7 @@ runs:
         unzip balena-cli.zip -d .
 
     - name: Update tool cache
-      uses: AnimMouse/tool-cache@v1
+      uses: AnimMouse/tool-cache@5c73a08045bdef61c81a6c60d208cff7ab36f3aa # v1
       with:
         folder_name: balena-cli
         cache_hit: ${{ steps.cache.outputs.cache-hit }}
