@@ -35,7 +35,7 @@ runs:
       id: cache
       uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4
       with:
-        path: ${{ runner.tool_cache }}/balena-cli
+        path: ${{ runner.tool_cache }}/balena
         key: balena-cli-${{ runner.os }}-${{ runner.arch }}-${{ steps.latest.outputs.release || inputs.cli-version }}
 
     - name: Get runner os
@@ -65,7 +65,7 @@ runs:
 
     - name: Download balena CLI
       if: steps.cache.outputs.cache-hit != true
-      working-directory: ${{ runner.temp }}
+      working-directory: ${{ runner.tool_cache }}
       shell: bash --noprofile --norc -eo pipefail -x {0}
       env:
         REPO: balena-io/balena-cli
@@ -73,19 +73,24 @@ runs:
         OS: ${{ steps.os.outputs.target }}
         ARCH: ${{ steps.arch.outputs.target }}
       run: |
-        curl -fsSL "http://github.com/${REPO}/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH}-standalone.zip" -o balena-cli.zip
-        unzip balena-cli.zip -d .
+        MAJOR_VERSION=$(echo "${VERSION}" | sed 's/^v//' | cut -d. -f1)
+        if [ "${MAJOR_VERSION}" -lt 22 ]; then
+          curl -fsSL "http://github.com/${REPO}/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH}-standalone.zip" -o balena-cli.zip
+          unzip balena-cli.zip -d .
+          rm -vrf balena-cli.zip
+          mkdir -vp balena
+          mv -v balena-cli balena/bin
+        else
+          curl -fsSL "http://github.com/${REPO}/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH}-standalone.tar.gz" | tar -xzf -
+        fi
 
-    - name: Update tool cache
-      uses: AnimMouse/tool-cache@5c73a08045bdef61c81a6c60d208cff7ab36f3aa # v1
-      with:
-        folder_name: balena-cli
-        cache_hit: ${{ steps.cache.outputs.cache-hit }}
+        echo "${RUNNER_TOOL_CACHE}/balena/bin" >>"${GITHUB_PATH}"
 
     - name: Print balena CLI version
       shell: bash
       working-directory: ${{ runner.temp }}
-      run: balena version
+      run: |
+        balena version
 
     - name: Login to balenaCloud
       if: inputs.balena-token != ''
