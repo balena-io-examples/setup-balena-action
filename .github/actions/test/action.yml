@@ -19,6 +19,7 @@ runs:
       uses: ./
       with:
         balena-token: ${{ fromJSON(inputs.secrets).BALENA_API_KEY }}
+        cli-version: ${{ env.matrix_value }}
     - name: Print balena CLI version
       shell: bash
       run: |
