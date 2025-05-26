@@ -73,8 +73,19 @@ runs:
         OS: ${{ steps.os.outputs.target }}
         ARCH: ${{ steps.arch.outputs.target }}
       run: |
-        curl -fsSL "http://github.com/${REPO}/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH}-standalone.zip" -o balena-cli.zip
-        unzip balena-cli.zip -d .
+        MAJOR_VERSION=$(echo "${VERSION}" | sed 's/^v//' | cut -d. -f1)
+        if [ "${MAJOR_VERSION}" -lt 22 ]; then
+          curl -fsSL "http://github.com/${REPO}/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH}-standalone.zip" -o balena-cli.zip
+          unzip balena-cli.zip -d .
+          rm -rf balena-cli.zip
+        else
+          curl -fsSL "http://github.com/${REPO}/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH}-standalone.tar.gz" -o balena-cli.tar.gz
+          tar -xzf balena-cli.tar.gz
+          mv balena balena-cli
+          rm -rf balena-cli.tar.gz
+          ln -s bin/balena balena-cli/balena
+        fi
+
 
     - name: Update tool cache
       uses: AnimMouse/tool-cache@5c73a08045bdef61c81a6c60d208cff7ab36f3aa # v1
