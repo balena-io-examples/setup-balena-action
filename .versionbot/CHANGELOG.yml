@@ -1,4 +1,18 @@
 - commits:
+    - subject: Always update PATH, even on cache hit
+      hash: c60b2e62f6790d2bd2d2f18732af3912140b2f61
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Kyle Harding <kyle@balena.io>
+        signed-off-by: Kyle Harding <kyle@balena.io>
+      author: Kyle Harding
+      nested: []
+  version: 0.0.11
+  title: ""
+  date: 2025-05-26T18:50:07.533Z
+- commits:
     - subject: Update unpack instructions for balena-cli v22
       hash: f388a9eec2cc5d6eec1030057fe66b2332625cbf
       body: ""
