@@ -1,4 +1,18 @@
 - commits:
+    - subject: Update unpack instructions for balena-cli v22
+      hash: f388a9eec2cc5d6eec1030057fe66b2332625cbf
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Kyle Harding <kyle@balena.io>
+        signed-off-by: Kyle Harding <kyle@balena.io>
+      author: Kyle Harding
+      nested: []
+  version: 0.0.10
+  title: ""
+  date: 2025-05-26T18:11:54.358Z
+- commits:
     - subject: Update dependency balena-io/balena-cli to v21.1.14
       hash: 6c0c5182a2d4f8dcbe1077cb069cc4652807c5dc
       body: |
