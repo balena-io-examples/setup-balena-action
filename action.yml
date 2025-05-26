@@ -26,7 +26,7 @@ runs:
       working-directory: ${{ runner.temp }}
       env:
         # renovate: datasource=github-releases depName=balena-io/balena-cli
-        BALENA_CLI_VERSION: v21.1.14
+        BALENA_CLI_VERSION: v22.0.0
       run: |
         echo "release=${BALENA_CLI_VERSION}" >> "${GITHUB_OUTPUT}"
 
