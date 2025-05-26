@@ -84,6 +84,10 @@ runs:
           curl -fsSL "http://github.com/${REPO}/releases/download/${VERSION}/balena-cli-${VERSION}-${OS}-${ARCH}-standalone.tar.gz" | tar -xzf -
         fi
 
+    - name: Update PATH
+      shell: bash
+      working-directory: ${{ runner.temp }}
+      run: |
         echo "${RUNNER_TOOL_CACHE}/balena/bin" >>"${GITHUB_PATH}"
 
     - name: Print balena CLI version
