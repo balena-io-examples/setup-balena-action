@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency balena-io/balena-cli to v22.0.5
+      hash: 76d0ee603b90964f605532a2b6d2c489bb46f84b
+      body: |
+        Update balena-io/balena-cli from 22.0.4 to 22.0.5
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Self-hosted Renovate Bot
+      nested: []
+  version: 0.0.17
+  title: ""
+  date: 2025-05-29T15:54:58.989Z
+- commits:
     - subject: Update dependency balena-io/balena-cli to v22.0.4
       hash: 366d1ed2b372bcf87b80ce7b41ad660fca07fdbf
       body: |
