@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update actions/cache digest to 0400d5f
+      hash: bc933f7d00bdb63acfee479f32707ac8a511880c
+      body: |
+        Update actions/cache
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Self-hosted Renovate Bot
+      nested: []
+  version: 0.0.28
+  title: ""
+  date: 2025-08-07T13:07:25.782Z
+- commits:
     - subject: Update dependency balena-io/balena-cli to v22.2.2
       hash: e2f43846545d92741c5342a2d5a8bcd849492150
       body: |
