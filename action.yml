@@ -39,7 +39,7 @@ runs:
         key: balena-cli-${{ runner.os }}-${{ runner.arch }}-${{ steps.latest.outputs.release || inputs.cli-version }}
 
     - name: Get runner os
-      if: steps.cache.outputs.cache-hit != true
+      if: steps.cache.outputs.cache-hit != 'true'
       id: os
       shell: bash
       working-directory: ${{ runner.temp }}
@@ -52,7 +52,7 @@ runs:
         esac
 
     - name: Get runner arch
-      if: steps.cache.outputs.cache-hit != true
+      if: steps.cache.outputs.cache-hit != 'true'
       id: arch
       shell: bash
       working-directory: ${{ runner.temp }}
@@ -64,7 +64,7 @@ runs:
         esac
 
     - name: Download balena CLI
-      if: steps.cache.outputs.cache-hit != true
+      if: steps.cache.outputs.cache-hit != 'true'
       working-directory: ${{ runner.tool_cache }}
       shell: bash --noprofile --norc -eo pipefail -x {0}
       env:
