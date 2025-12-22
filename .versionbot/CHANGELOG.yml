@@ -1,4 +1,14 @@
 - commits:
+    - subject: "patch: Correct cache skip conditional"
+      hash: 29e8e30751e3d8a6e10ee36c1b64c544bfc00097
+      body: ""
+      footer: {}
+      author: Anton Belodedenko
+      nested: []
+  version: 0.0.73
+  title: ""
+  date: 2025-12-22T23:49:33.160Z
+- commits:
     - subject: Update dependency balena-io/balena-cli to v23.2.11
       hash: b894c4ddac73c96bf3f025345c5582624944eeef
       body: |
