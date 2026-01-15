@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency balena-io/balena-cli to v23.2.23
+      hash: c4b03439454818ce9da36e08c2b94cc0d3239384
+      body: |
+        Update balena-io/balena-cli from 23.2.22 to 23.2.23
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: Self-hosted Renovate Bot
+      nested: []
+  version: 0.0.87
+  title: ""
+  date: 2026-01-15T02:35:47.809Z
+- commits:
     - subject: Update pre-commit hook rhysd/actionlint to v1.7.10
       hash: 078598cf956a2f9838d973fd48b341de8eeb5565
       body: |
