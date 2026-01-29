@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update actions/cache digest to cdf6c1f
+      hash: 16b1196ecd1455cbc8a1c959d15dc067051b64a9
+      body: |
+        Update actions/cache
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 0.0.96
+  title: ""
+  date: 2026-01-29T10:07:55.210Z
+- commits:
     - subject: Update dependency balena-io/balena-cli to v23.2.30
       hash: 371a184fb124ccaaaede8763955ed323d1e09844
       body: |
