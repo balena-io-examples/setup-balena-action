@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update dependency balena-io/balena-cli to v23.2.31
+      hash: 8bec19e3b0e9a907628a648c02611379ece4f5d1
+      body: |
+        Update balena-io/balena-cli from 23.2.30 to 23.2.31
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 0.0.97
+  title: ""
+  date: 2026-02-11T18:07:54.493Z
+- commits:
     - subject: Update actions/cache digest to cdf6c1f
       hash: 16b1196ecd1455cbc8a1c959d15dc067051b64a9
       body: |
