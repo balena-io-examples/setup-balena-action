@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update actions/cache digest to 6682284
+      hash: 3c65edaaa938e375cdfc3b4a18b2d345cd8129e3
+      body: |
+        Update actions/cache
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 0.0.100
+  title: ""
+  date: 2026-03-18T15:09:23.433Z
+- commits:
     - subject: Update pre-commit hook rhysd/actionlint to v1.7.11
       hash: 2c406943cbfab0c60d409afab34587d45edf54fa
       body: |
