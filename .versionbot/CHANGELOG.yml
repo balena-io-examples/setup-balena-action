@@ -1,4 +1,17 @@
 - commits:
+    - subject: Pin product-os/flowzone action to a53cf4b
+      hash: 671676ba7981eeb612c546f35c2611d41b4ba8f0
+      body: |
+        Update product-os/flowzone
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 0.0.101
+  title: ""
+  date: 2026-03-24T18:06:56.851Z
+- commits:
     - subject: Update actions/cache digest to 6682284
       hash: 3c65edaaa938e375cdfc3b4a18b2d345cd8129e3
       body: |
