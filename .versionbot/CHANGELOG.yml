@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update actions/cache digest to 27d5ce7
+      hash: b0de170767d5f69aa386a84d87ced6272f4ad193
+      body: |
+        Update actions/cache
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 0.0.118
+  title: ""
+  date: 2026-04-13T17:52:29.596Z
+- commits:
     - subject: Revert flowzone pinning to master
       hash: efc019cef8b577270895cbad6ff18e4b558551df
       body: ""
