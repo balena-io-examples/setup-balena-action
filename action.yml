@@ -8,6 +8,9 @@ inputs:
     description: "balena CLI version to install (example: `v18.1.9`)"
     required: false
     default: latest
+  cli-channel:
+    description: "balena CLI release channel to install (example: `my-feature-branch`)"
+    required: false
   balena-token:
     description: "balenaCloud API token to login automatically"
     required: false
@@ -19,8 +22,16 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Check inputs
+      if: inputs.cli-channel != '' && inputs.cli-version != '' && inputs.cli-version != 'latest'
+      shell: bash
+      working-directory: ${{ runner.temp }}
+      run: |
+        echo "::error::Inputs cli-version and cli-channel are mutually exclusive"
+        exit 1
+
     - name: Use latest release
-      if: inputs.cli-version == 'latest' || inputs.cli-version == ''
+      if: inputs.cli-channel == '' && (inputs.cli-version == 'latest' || inputs.cli-version == '')
       id: latest
       shell: bash
       working-directory: ${{ runner.temp }}
@@ -30,29 +41,21 @@ runs:
       run: |
         echo "release=${BALENA_CLI_VERSION}" >> "${GITHUB_OUTPUT}"
 
-    - name: Restore tool cache
-      if: inputs.skip-cache != 'true'
-      id: cache
-      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
-      with:
-        path: ${{ runner.tool_cache }}/balena
-        key: balena-cli-${{ runner.os }}-${{ runner.arch }}-${{ steps.latest.outputs.release || inputs.cli-version }}
-
+    # Runs unconditionally, as resolving a channel needs the platform triple
+    # before there is a cache key to restore with
     - name: Get runner os
-      if: steps.cache.outputs.cache-hit != 'true'
       id: os
       shell: bash
       working-directory: ${{ runner.temp }}
       run: |
         case "${{ runner.os }}" in
-          Linux) echo "target=linux" >> "${GITHUB_OUTPUT}" ;;
-          macOS) echo "target=macOS" >> "${GITHUB_OUTPUT}" ;;
-          Windows) echo "target=windows" >> "${GITHUB_OUTPUT}" ;;
+          Linux) echo "target=linux" >> "${GITHUB_OUTPUT}" ; echo "platform=linux" >> "${GITHUB_OUTPUT}" ;;
+          macOS) echo "target=macOS" >> "${GITHUB_OUTPUT}" ; echo "platform=darwin" >> "${GITHUB_OUTPUT}" ;;
+          Windows) echo "target=windows" >> "${GITHUB_OUTPUT}" ; echo "platform=win32" >> "${GITHUB_OUTPUT}" ;;
           *) echo "::error::Unsupported os: ${{ runner.os }}" ; exit 1 ;;
         esac
 
     - name: Get runner arch
-      if: steps.cache.outputs.cache-hit != 'true'
       id: arch
       shell: bash
       working-directory: ${{ runner.temp }}
@@ -63,8 +66,62 @@ runs:
           *) echo "::error::Unsupported arch: ${{ runner.arch }}" ; exit 1 ;;
         esac
 
+    - name: Resolve release channel
+      if: inputs.cli-channel != ''
+      id: channel
+      shell: bash --noprofile --norc -eo pipefail {0}
+      working-directory: ${{ runner.temp }}
+      env:
+        # balena-io/balena-cli: package.json oclif.update.s3.host
+        S3_HOST: https://balena-cli.s3.us-east-1.amazonaws.com
+        CHANNEL: ${{ inputs.cli-channel }}
+        PLATFORM: ${{ steps.os.outputs.platform }}
+        ARCH: ${{ steps.arch.outputs.target }}
+      run: |
+        URL="${S3_HOST}/channels/${CHANNEL}/balena-${PLATFORM}-${ARCH}-buildmanifest"
+        # The bucket denies s3:ListBucket, so a missing key returns 403 not 404
+        if ! MANIFEST="$(curl -fsSL "${URL}")"; then
+          echo "::error::No balena CLI build for channel '${CHANNEL}' on ${PLATFORM}-${ARCH} (${URL})"
+          exit 1
+        fi
+        GZ="$(echo "${MANIFEST}" | jq -er '.gz')"
+        SHA256="$(echo "${MANIFEST}" | jq -er '.sha256gz')"
+        VERSION="$(echo "${MANIFEST}" | jq -er '.version')"
+        SHA="$(echo "${MANIFEST}" | jq -er '.sha')"
+        {
+          echo "gz=${GZ}"
+          echo "sha256=${SHA256}"
+          echo "cache-key=${CHANNEL}-${VERSION}-${SHA}"
+        } >> "${GITHUB_OUTPUT}"
+
+    - name: Restore tool cache
+      if: inputs.skip-cache != 'true'
+      id: cache
+      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+      with:
+        path: ${{ runner.tool_cache }}/balena
+        key: balena-cli-${{ runner.os }}-${{ runner.arch }}-${{ steps.channel.outputs.cache-key || steps.latest.outputs.release || inputs.cli-version }}
+
+    - name: Download balena CLI from release channel
+      if: steps.cache.outputs.cache-hit != 'true' && inputs.cli-channel != ''
+      working-directory: ${{ runner.tool_cache }}
+      shell: bash --noprofile --norc -eo pipefail -x {0}
+      env:
+        GZ: ${{ steps.channel.outputs.gz }}
+        SHA256: ${{ steps.channel.outputs.sha256 }}
+      run: |
+        curl -fsSL "${GZ}" -o balena-cli.tar.gz
+        # macOS ships shasum only, Ubuntu and Git for Windows ship both
+        if command -v sha256sum >/dev/null 2>&1; then
+          echo "${SHA256}  balena-cli.tar.gz" | sha256sum -c -
+        else
+          echo "${SHA256}  balena-cli.tar.gz" | shasum -a 256 -c -
+        fi
+        tar -xzf balena-cli.tar.gz
+        rm -vf balena-cli.tar.gz
+
     - name: Download balena CLI
-      if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.cache.outputs.cache-hit != 'true' && inputs.cli-channel == ''
       working-directory: ${{ runner.tool_cache }}
       shell: bash --noprofile --norc -eo pipefail -x {0}
       env:
