@@ -1,4 +1,47 @@
 - commits:
+    - subject: Support installing the balena CLI from a release channel
+      hash: 238a82438b92161a2240c37956bf81d5050f19f6
+      body: >
+        balena CLI pull requests publish oclif builds to an S3 release channel
+        named
+
+        after the branch, and finished releases go to the `stable` channel. Add
+        a
+
+        `cli-channel` input that resolves the channel buildmanifest and installs
+        the
+
+        tarball it points at, so a workflow can test an unreleased CLI build.
+
+
+        The channel path verifies the manifest `sha256gz` before extracting, and
+        its
+
+        cache key includes the resolved version and commit because a channel
+        moves as
+
+        its pull request gains commits.
+      footer:
+        Change-type: minor
+        change-type: minor
+        Signed-off-by: Kyle Harding <kyle@balena.io>
+        signed-off-by: Kyle Harding <kyle@balena.io>
+      author: Kyle Harding
+      nested: []
+    - subject: "test: Add pinned CLI version to the test matrix"
+      hash: d589acb4d46d9eee831bf81d907d995099fd741e
+      body: ""
+      footer:
+        Change-type: patch
+        change-type: patch
+        Signed-off-by: Kyle Harding <kyle@balena.io>
+        signed-off-by: Kyle Harding <kyle@balena.io>
+      author: Kyle Harding
+      nested: []
+  version: 0.1.0
+  title: ""
+  date: 2026-08-10T20:19:45.718Z
+- commits:
     - subject: Update pre-commit hook rhysd/actionlint to v1.7.12
       hash: 390c9ddf84b1888671862bb215d42d7ba34baada
       body: |
