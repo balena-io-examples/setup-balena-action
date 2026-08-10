@@ -28,7 +28,8 @@ jobs:
         {
           value: [
             "pinned",
-            "latest"
+            "latest",
+            "channel"
           ],
           os: ["ubuntu-latest", "windows-latest", "macos-latest"]
         }

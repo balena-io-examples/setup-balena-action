@@ -22,7 +22,9 @@ runs:
         BALENA_CLI_VERSION: v23.2.32
       with:
         balena-token: ${{ fromJSON(inputs.secrets).BALENA_API_KEY }}
-        cli-version: ${{ env.matrix_value == 'pinned' && env.BALENA_CLI_VERSION || env.matrix_value }}
+        # cli-version cannot be unset, so the channel case leaves it at the default
+        cli-version: ${{ (env.matrix_value == 'pinned' && env.BALENA_CLI_VERSION) || (env.matrix_value == 'channel' && 'latest') || env.matrix_value }}
+        cli-channel: ${{ env.matrix_value == 'channel' && 'stable' || '' }}
     - name: Print balena CLI version
       shell: bash
       run: |
