@@ -17,9 +17,12 @@ runs:
   steps:
     - name: Test setup of balena CLI
       uses: ./
+      env:
+        # renovate: datasource=github-releases depName=balena-io/balena-cli
+        BALENA_CLI_VERSION: v23.2.32
       with:
         balena-token: ${{ fromJSON(inputs.secrets).BALENA_API_KEY }}
-        cli-version: ${{ env.matrix_value }}
+        cli-version: ${{ env.matrix_value == 'pinned' && env.BALENA_CLI_VERSION || env.matrix_value }}
     - name: Print balena CLI version
       shell: bash
       run: |

@@ -27,6 +27,7 @@ jobs:
       custom_test_matrix: >
         {
           value: [
+            "pinned",
             "latest"
           ],
           os: ["ubuntu-latest", "windows-latest", "macos-latest"]
