@@ -19,7 +19,7 @@ runs:
       uses: ./
       env:
         # renovate: datasource=github-releases depName=balena-io/balena-cli
-        BALENA_CLI_VERSION: v23.2.32
+        BALENA_CLI_VERSION: v24.1.4
       with:
         balena-token: ${{ fromJSON(inputs.secrets).BALENA_API_KEY }}
         # cli-version cannot be unset, so the channel case leaves it at the default
