@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update actions/cache digest to caa2961
+      hash: 38b97011619d874a6d83b6dfa80c864637aa4267
+      body: |
+        Update actions/cache
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 0.1.2
+  title: ""
+  date: 2026-10-21T21:43:27.535Z
+- commits:
     - subject: Update dependency balena-io/balena-cli to v25
       hash: 5732e04b3a22e76a05bfb9cd52b6eebf84460479
       body: |
