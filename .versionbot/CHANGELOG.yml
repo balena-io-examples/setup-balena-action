@@ -1,4 +1,17 @@
 - commits:
+    - subject: Update actions/cache action to v6
+      hash: 8bbfeffb537fb346fba3c8c01306e4e49061e0f9
+      body: |
+        Update actions/cache from 5.1.0 to 6.1.0
+      footer:
+        Change-type: patch
+        change-type: patch
+      author: balena-renovate[bot]
+      nested: []
+  version: 0.1.4
+  title: ""
+  date: 2026-10-21T23:40:23.470Z
+- commits:
     - subject: Update dependency flowzonify to v0.4.21
       hash: a8910875a9b46f96098e715f6066b3b859aded7d
       body: |
